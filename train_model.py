@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import LinearSVC
 
 # Load dataset
-data = pd.read_csv("dataset_1000.csv")
+data = pd.read_csv("dataset.csv")
 
 X = data["description"]
 y = data["label"]
