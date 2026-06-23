@@ -14,10 +14,9 @@ print("AI Model loaded successfully!")
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({
-        "message": "Barangay AI API is running",
-        "endpoints": {
-            "classify": "POST /classify"
-        }
+        "status": "online",
+        "message": "Barangay AI API is active",
+        "model_loaded": True
     })
 
 @app.route("/classify", methods=["POST"])
