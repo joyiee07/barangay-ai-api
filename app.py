@@ -6,7 +6,6 @@ import numpy as np
 app = Flask(__name__)
 CORS(app)
 
-# Load model
 model = joblib.load("incident_model.pkl")
 
 print("AI Model loaded successfully!")
@@ -27,12 +26,13 @@ def classify():
         if not data or "description" not in data:
             return jsonify({"error": "Missing description"}), 400
 
-        description = data["description"].strip()
+        description = str(data["description"]).strip()
 
-        # Prediction
+        if description == "":
+            return jsonify({"error": "Empty description"}), 400
+
         prediction = model.predict([description])[0]
 
-        # Check if model supports probabilities
         if hasattr(model, "predict_proba"):
             probabilities = model.predict_proba([description])[0]
             confidence = float(max(probabilities) * 100)
@@ -49,10 +49,6 @@ def classify():
             confidence = 0.0
             top3 = []
 
-        print("INPUT:", description)
-        print("PREDICTION:", prediction)
-        print("CONFIDENCE:", confidence)
-
         return jsonify({
             "prediction": prediction,
             "confidence": round(confidence, 2),
@@ -64,4 +60,4 @@ def classify():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
